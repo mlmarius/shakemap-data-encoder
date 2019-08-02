@@ -7,8 +7,8 @@ def extract_generic_data(data: Dict[str, Dict[str, str]]) -> Dict[str, str]:
     first = data[list(data.keys())[0]]
     return {
         "eq_id": str(first['eq_id']),
-        "netid": "unknown",
-        "network": "unknown",
+        "netid": "RO",
+        "network": "RO",
         "eq_lat": str(first['eq_lat']),
         "eq_lon": str(first['eq_lon']),
         "eq_depth": str(first['eq_depth']),
@@ -156,52 +156,56 @@ def get_ci_xml(data: Dict[str, Dict[str, str]]) -> str:
             'station',
             code=station['sta_name'],
             name=station['sta_name'],
-            insttype='unknown',
+            insttype='ACCELEROMETER',
             lat=str(station['sta_lat']),
             lon=str(station['sta_lon']),
             dist=str(station['sta_epicdist']),
-            source='unknown',
-            netid='unknown',
+            source='RSN',
+            netid=generic['netid'],
             commtype='unknown',
-            loc='unknown',
+            loc='--',
             intensity=str(station['Intensity_EW'])
         )
 
-        comps = ET.Element(
-            'comp',
-            name="unknown"
-        )
+        #@TODO add EW and NS components
+        for suffix in ('EW', 'NS'):
 
-        comps.append(ET.Element(
-            'pga',
-            value=str(station['PGA_EW']),
-            flag='0'
-        ))
+            comps = ET.Element(
+                'comp',
+                name=suffix
+            )
 
-        comps.append(ET.Element(
-            'pgv',
-            value=str(station['PGV_EW']),
-            flag='0'
-        ))
+            comps.append(ET.Element(
+                'pga',
+                value=str(station[f'PGA_{suffix}']),
+                flag='0'
+            ))
 
-        comps.append(ET.Element(
-            'psa03',
-            value=str(station['PSA03_EW']),
-            flag='0'
-        ))
+            comps.append(ET.Element(
+                'pgv',
+                value=str(station[f'PGV_{suffix}']),
+                flag='0'
+            ))
 
-        comps.append(ET.Element(
-            'psa10',
-            value=str(station['PSA10_EW']),
-            flag='0'
-        ))
+            comps.append(ET.Element(
+                'psa03',
+                value=str(station[f'PSA03_{suffix}']),
+                flag='0'
+            ))
 
-        comps.append(ET.Element(
-            'psa30',
-            value=str(station['PSA30_EW']),
-            flag='0'
-        ))
-        station_element.append(comps)
+            comps.append(ET.Element(
+                'psa10',
+                value=str(station[f'PSA10_{suffix}']),
+                flag='0'
+            ))
+
+            comps.append(ET.Element(
+                'psa30',
+                value=str(station[f'PSA30_{suffix}']),
+                flag='0'
+            ))
+            station_element.append(comps)
+
         station_list.append(station_element)
 
     root.append(station_list)
