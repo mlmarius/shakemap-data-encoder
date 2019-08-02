@@ -117,7 +117,7 @@ def get_ci_xml(data: Dict[str, Dict[str, str]]) -> str:
   created	CDATA	#REQUIRED
 >
 ]>
-    '''
+    '''.strip()
 
     generic = extract_generic_data(data)
     root = ET.Element(
@@ -167,7 +167,6 @@ def get_ci_xml(data: Dict[str, Dict[str, str]]) -> str:
             intensity=str(station['Intensity_EW'])
         )
 
-        #@TODO add EW and NS components
         for suffix in ('EW', 'NS'):
 
             comps = ET.Element(
@@ -209,5 +208,5 @@ def get_ci_xml(data: Dict[str, Dict[str, str]]) -> str:
         station_list.append(station_element)
 
     root.append(station_list)
-
-    return f"{header}\n{ET.tostring(root)}"
+    xml = ET.tostring(root).decode('utf-8')
+    return f"{header}\n{xml}"
