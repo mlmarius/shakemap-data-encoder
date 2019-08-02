@@ -35,7 +35,7 @@ def get_event_xml(data: Dict[str, Dict[str, str]]) -> str:
         locstring=generic['locstring'],
         event_type=generic['event_type'],
     )
-    return ET.tostring(earthquake)
+    return ET.tostring(earthquake).decode('utf-8')
 
 
 def get_ci_xml(data: Dict[str, Dict[str, str]]) -> str:
