@@ -13,7 +13,7 @@ def extract_generic_data(data: Dict[str, Dict[str, str]]) -> Dict[str, str]:
         "eq_lon": str(first['eq_lon']),
         "eq_depth": str(first['eq_depth']),
         "eq_Mw": str(first['eq_Mw']),
-        "eq_origin": first['eq_origin'],
+        "eq_origin": first['eq_origin'].replace('/', '-')+'Z',
         "locstring": "unknown",
         "event_type": "ACTUAL",
         "created_at": "unknown"
