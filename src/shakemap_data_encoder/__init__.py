@@ -164,10 +164,10 @@ def get_ci_xml(data: Dict[str, Dict[str, str]]) -> str:
             netid=generic['netid'],
             commtype='unknown',
             loc='--',
-            intensity=str(station['Intensity_EW'])
+            intensity=str(station['Intensity_max'])
         )
 
-        for suffix in ('EW', 'NS'):
+        for suffix in ('HNE', 'HNN'):
 
             comps = ET.Element(
                 'comp',
