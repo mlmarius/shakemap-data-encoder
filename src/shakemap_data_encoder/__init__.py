@@ -1,6 +1,7 @@
 from typing import Dict
 import xml.etree.cElementTree as ET
 from dateutil.parser import parse
+import xml.dom.minidom
 
 
 def extract_generic_data(data: Dict[str, Dict[str, str]]) -> Dict[str, str]:
@@ -208,5 +209,10 @@ def get_ci_xml(data: Dict[str, Dict[str, str]]) -> str:
         station_list.append(station_element)
 
     root.append(station_list)
-    xml = ET.tostring(root).decode('utf-8')
-    return f"{header}\n{xml}"
+    out = ET.tostring(root).decode('utf-8')
+    out = f"{header}\n{out}"
+
+    # dom = xml.dom.minidom.parse(xml)  # or xml.dom.minidom.parseString(xml_string)
+    dom = xml.dom.minidom.parseString(out)
+    pretty_xml_as_string = dom.toprettyxml()
+    return pretty_xml_as_string
